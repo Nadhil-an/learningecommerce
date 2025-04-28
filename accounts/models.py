@@ -34,7 +34,7 @@ class MyAccountManager(BaseUserManager):
         user.is_active = True
         user.is_staff = True
         user.is_superadmin = True
-        user.save(using=self._db)  # ✅ don't forget to save!
+        user.save(using=self._db) 
         return user
 
 class Account(AbstractBaseUser):
@@ -46,7 +46,7 @@ class Account(AbstractBaseUser):
 
     # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now=True)  # ✅ corrected here
+    last_login = models.DateTimeField(auto_now=True)  
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
