@@ -7,6 +7,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def __cart_id(request):
+    #creating a session key for user
     cart = request.session.session_key
     if not cart:
         cart = request.session.create()
@@ -26,7 +27,6 @@ def add_cart(request,product_id):
     cart.save()
     
      #checking product already exists
-
     try:
         cart_item = CartItem.objects.get(product=product,cart=cart)
         cart_item.quantity +=1
@@ -43,5 +43,24 @@ def add_cart(request,product_id):
 
 
 def cart(request):
+
+    session_key = __cart_id(request)
+    try:
+        cart = Cart.objects.get(cart_id = session_key)
+        cart_item = CartItem.objects.filter(cart=cart,is_active=True)
+
+        for cart_items in cart_item:
+            total_price += (cart_items.price * cart_items.quantity)
+            total_quantity += cart_item.quantity
+    except:
+        pass
+
+    context = {
+        'cart_item' :cart_item,
+        'total_quantity':total_quantity,
+        'total_price' : total_price
+    }
+
+
     
-    return render(request,'cart.html')
+    return render(request,'cart.html',context)
