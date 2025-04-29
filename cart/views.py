@@ -43,6 +43,11 @@ def add_cart(request,product_id):
 
 
 def cart(request):
+    
+    quantity = 0
+    cart_items = []
+    total = 0
+
 
     session_key = __cart_id(request)
     try:
@@ -50,15 +55,19 @@ def cart(request):
         cart_item = CartItem.objects.filter(cart=cart,is_active=True)
 
         for cart_items in cart_item:
-            total_price += (cart_items.price * cart_items.quantity)
-            total_quantity += cart_item.quantity
+            total += (cart_items.product.price * cart_items.quantity)
+            quantity += cart_items.quantity
+            
+            
     except:
         pass
 
+   
+
     context = {
         'cart_item' :cart_item,
-        'total_quantity':total_quantity,
-        'total_price' : total_price
+        'quantity': quantity,
+        'total':total
     }
 
 
