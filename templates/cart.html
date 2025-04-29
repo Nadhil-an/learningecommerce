@@ -26,7 +26,10 @@
     <tr>
         <td>
             <figure class="itemside align-items-center">
-                <div class="aside"><img src="{{ cart_product.product.images.url }}" class="img-sm"></div>
+                <a href="{{ cart_product.get_url }}">
+                    <div class="aside"><img src="{{ cart_product.product.images.url }}" class="img-sm"></div>
+                </a>
+                
                 <figcaption class="info">
                     <a href="#" class="title text-dark">{{ cart_product.product.product_name }}</a>
                     <p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
@@ -42,7 +45,9 @@
                                 </div>
                                 <input type="text" class="form-control"  value="{{ cart_product.quantity }}">
                                 <div class="input-group-append">
-                                <button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+                                
+                                    <a href="{% url 'add_cart' cart_product.product.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+
                                 </div>
                             </div> <!-- input-group.// -->
                         </div> <!-- col.// -->
@@ -74,15 +79,15 @@
             <div class="card-body">
                 <dl class="dlist-align">
                   <dt>Total price:</dt>
-                  <dd class="text-right">$</dd>
+                  <dd class="text-right">${{ total }}</dd>
                 </dl>
                 <dl class="dlist-align">
                   <dt>Tax:</dt>
-                  <dd class="text-right"> $</dd>
+                  <dd class="text-right"> ${{ tax }}</dd>
                 </dl>
                 <dl class="dlist-align">
                   <dt>Total:</dt>
-                  <dd class="text-right text-dark b"><strong>$</strong></dd>
+                  <dd class="text-right text-dark b"><strong>${{ grandtotal }}</strong></dd>
                 </dl>
                 <hr>
                 <p class="text-center mb-3">

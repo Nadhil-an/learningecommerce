@@ -47,8 +47,8 @@ def cart(request):
     quantity = 0
     cart_items = []
     total = 0
-
-
+    
+    
     session_key = __cart_id(request)
     try:
         cart = Cart.objects.get(cart_id = session_key)
@@ -57,17 +57,18 @@ def cart(request):
         for cart_items in cart_item:
             total += (cart_items.product.price * cart_items.quantity)
             quantity += cart_items.quantity
-            
-            
+        tax = total * 0.02
+
+        grandtotal = total + tax
     except:
         pass
-
-   
 
     context = {
         'cart_item' :cart_item,
         'quantity': quantity,
-        'total':total
+        'total':total,
+        'grandtotal':grandtotal,
+        'tax':tax
     }
 
 
