@@ -52,6 +52,13 @@ def remove_item(request,product_id):
         cart_item.delete()
     return redirect('cart')
 
+def remove_button(request,product_id):
+    cart = Cart.objects.get(cart_id=__cart_id(request))
+    product = get_object_or_404(Product,id=product_id)
+    cart_item = get_object_or_404(product=product,cart=cart)
+    cart_item.delete()
+    return render('cart')
+
 
 def cart(request):
     
