@@ -30,6 +30,8 @@ def store(request,category_slug=None):
     return render (request,'store.html',context)
 
 
+## Dynamically displaying  product details into product details page 
+
 def product_details(request, category_slug, product_slug):
     single_product = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
     context = {
