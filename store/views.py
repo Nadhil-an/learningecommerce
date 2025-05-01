@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import Product
+from .models import Product,variation
 from category.models import Category
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -34,11 +34,19 @@ def store(request,category_slug=None):
 
 def product_details(request, category_slug, product_slug):
     single_product = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
+
+    product_variation_color = variation.objects.color().filter(product=single_product)
+    product_variation_size = variation.objects.size().filter(product=single_product)
+
     context = {
         'single_product': single_product,
+        'product_variation_color':product_variation_color,
+        'product_variation_size':product_variation_size
     }
     return render(request, 'product_details.html', context)
 
+
+## logic for search functionality
 
 def search(request):
     products = []  # Initialize to avoid UnboundLocalError
