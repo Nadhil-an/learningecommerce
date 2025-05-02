@@ -11,7 +11,7 @@
           <article class="card-body">
             
             <header class="mb-4"><h4 class="card-title">Sign up</h4></header>
-            
+            {% include 'includes/alert.html'%}
 
             <form  action="{% url 'register'%}" method="POST">
               {% csrf_token%}
