@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'e_commerce.urls'
 
 TEMPLATES = [
@@ -149,6 +150,6 @@ MESSAGE_TAGS = {
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'ayisha@gmail.com'
-EMAIL_HOST_PASSWORD = 'ayisha'
-EMAIL_USER_TLS = True
+EMAIL_HOST_USER = 'nadhil838@gmail.com'
+EMAIL_HOST_PASSWORD = 'tesd kbcg mnck mxqc'
+EMAIL_USE_TLS = True
