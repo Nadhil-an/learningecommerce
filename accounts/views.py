@@ -12,6 +12,8 @@ from django.utils.http import  urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import  EmailMessage
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 # Create your views here.
@@ -45,8 +47,10 @@ def register(request):
             to_email    = email
             send_email  = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            messages.success(request,'Registration Successfull.please verify you account through email verification')
-            return redirect('register')
+            return HttpResponseRedirect(reverse('login') + f'?command=verification&email={email}')
+
+            
+
     else:
         form = RegistrationForm()
 
@@ -59,7 +63,9 @@ def register(request):
 
 ### login functionality
 def login(request):
+
     if request.method == 'POST':
+       
         email = request.POST['email']
         password = request.POST['password']
 
@@ -71,7 +77,8 @@ def login(request):
         else:
             messages.error(request,'Invalid login credentials')
             return redirect('login')
-    return render(request,'login.html')
+    return render(request, 'login.html')
+
 
 
 

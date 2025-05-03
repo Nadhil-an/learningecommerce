@@ -150,6 +150,6 @@ MESSAGE_TAGS = {
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nadhil838@gmail.com'
-EMAIL_HOST_PASSWORD = 'tesd kbcg mnck mxqc'
+EMAIL_HOST_USER = 'nadhil.edu@gmail.com'
+EMAIL_HOST_PASSWORD = 'mxra vupr hrbc byrr'
 EMAIL_USE_TLS = True
