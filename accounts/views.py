@@ -152,8 +152,25 @@ def reset_validation(request,uidb64,token):
         return redirect('login')
     
 def resetpassword(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
 
-
-    return render(request,'resetpassword.html')
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            if uid:
+                user = Account.objects.get(pk=uid)
+                user.set_password(password)
+                user.save()
+                messages.success(request, 'Password reset successfully')
+                return redirect('login')  # <-- Redirect after success
+            else:
+                messages.error(request, 'Session expired. Try the link again.')
+                return redirect('forgotPassword')
+        else:
+            messages.error(request, 'Passwords do not match')
+            return redirect('resetpassword')
+    
+    return render(request, 'resetpassword.html')
 
     
