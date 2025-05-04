@@ -47,9 +47,7 @@ def register(request):
             to_email    = email
             send_email  = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            return HttpResponseRedirect(reverse('login') + f'?command=verification&email={email}')
-
-            
+            return HttpResponseRedirect(reverse('login') + f'?command=verification&email={email}')  
 
     else:
         form = RegistrationForm()
@@ -105,4 +103,7 @@ def activate(request,uidb64,token):
         messages.error(request,'Invalid activation link')
         return redirect('register')
 
+@login_required(login_url= 'login')
+def dashboard(request):
+    return render(request,'dashboard.html')
     
