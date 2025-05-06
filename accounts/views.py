@@ -173,4 +173,6 @@ def resetpassword(request):
     
     return render(request, 'resetpassword.html')
 
+def checkout(request):
+    return render(request,'checkout.html')
     
