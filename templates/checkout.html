@@ -55,6 +55,7 @@ $(document).ready(function() {
         <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
         <div class="col-lg  col-md-6 col-sm-12 col">
             <form action="{% url 'search' %}" class="search" method="get">
+                {% csrf_token %}
                 
                 <div class="input-group w-100">
                     <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword">
@@ -106,8 +107,9 @@ $(document).ready(function() {
         <aside class="col-lg-9">
     <div class="card">
         <div class="card-body">
+            <form action="{}" method="POST">
             <h4 class="card-title mb-4">Billing Address</h4>
-            <form action="">
+            <form action="" method="POST">
                 <div class="form-row">
                     <div class="col form-group">
                         <label >First Name</label>
@@ -125,7 +127,7 @@ $(document).ready(function() {
                     </div>
                     <div class="col form-group">
                         <label >Phone Number</label>
-                        <input type="number" name="number" class="form-control" required>
+                        <input type="text" name="number" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -158,21 +160,20 @@ $(document).ready(function() {
                     <label >order Note</label>
                     <textarea name="order_note" rows="2" class="form-control"></textarea>
                 </div>
-            </form>
-        </div>
+            
+                </div>
 
-    </div> <!-- card.// -->
+                </div> <!-- card.// -->
     
-        </aside> <!-- col.// -->
-        <aside class="col-lg-3">
+                </aside> <!-- col.// -->
+                <aside class="col-lg-3">
     
-            <div class="card">
-            <div class="card-body">
+                <div class="card">
+                <div class="card-body">
                
-                
-                
-                <a href="./place-order.html" class="btn btn-primary btn-block"> place order </a>
+                <button type="submit" name="submit" class="btn btn-primary btn-block">place order</button>
                 <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
+            </form>
             </div> <!-- card-body.// -->
             </div> <!-- card.// -->
     

@@ -70,6 +70,9 @@ def cart(request):
     quantity = 0
     cart_items = []
     total = 0
+    cart_item = []
+    grandtotal = 0
+    tax=0
     
     
     session_key = __cart_id(request)

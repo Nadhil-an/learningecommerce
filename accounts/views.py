@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from . forms import RegistrationForm
 from .models import Account
+from cart.views import Cart,CartItem
 from django.contrib import auth,messages
 from django.contrib.auth.decorators import login_required
 
@@ -14,6 +15,9 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import  EmailMessage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
+from cart.views import __cart_id
+
 
 
 # Create your views here.
@@ -69,6 +73,18 @@ def login(request):
 
         user = auth.authenticate(email=email,password=password)
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=__cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+
+                    for item in cart_item:
+                        item.user = user
+                        item.save()
+            except:
+                pass
+            
             auth.login(request,user)
             messages.success(request,'login Successfull')
             return redirect('home')
@@ -173,6 +189,8 @@ def resetpassword(request):
     
     return render(request, 'resetpassword.html')
 
+
+@login_required(login_url='login')
 def checkout(request):
     return render(request,'checkout.html')
     
