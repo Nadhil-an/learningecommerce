@@ -76,10 +76,7 @@ def add_cart(request, product_id):
                 cart=cart,
                 quantity=1
             )
-
     return redirect('cart')  # Redirect to the cart page
-
-
 
 
 def remove_item(request, product_id):
