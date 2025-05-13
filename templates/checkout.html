@@ -107,9 +107,9 @@ $(document).ready(function() {
         <aside class="col-lg-9">
     <div class="card">
         <div class="card-body">
-            <form action="{}" method="POST">
-            <h4 class="card-title mb-4">Billing Address</h4>
-            <form action="" method="POST">
+            <form action="{% url 'placeorder' %}" method="POST">
+                {% csrf_token %}
+            <h4 class="card-title mb-4">Billing Address</h4>           
                 <div class="form-row">
                     <div class="col form-group">
                         <label >First Name</label>
@@ -127,7 +127,7 @@ $(document).ready(function() {
                     </div>
                     <div class="col form-group">
                         <label >Phone Number</label>
-                        <input type="text" name="number" class="form-control" required>
+                        <input type="text" name="phone" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -153,7 +153,7 @@ $(document).ready(function() {
 
                     <div class="col form-group">
                         <label >Country</label>
-                        <input type="text" name="county" class="form-control">
+                        <input type="text" name="country" class="form-control">
                     </div>
                 </div>
                 <div class="form-row">
