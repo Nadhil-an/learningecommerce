@@ -54,7 +54,18 @@ def place_order(request,total=0,quantity=0):
       order_number =current_date + str(data.id)
       data.order_number = order_number
       data.save()
-      return redirect('checkout')
+
+      order = Order.objects.get(user=current_user,is_ordered = False,order_number=order_number)
+      context ={
+        'order' : order,
+        'cart_items' :cart_items,
+        'total' :total,
+        'tax' :tax,
+        'grand_total' : grand_total,
+      }
+      return render(request,'payment.html',context)
     else:
       return redirect('checkout')
 
+def payments(request):
+  return render(request,'payment.html')
