@@ -30,7 +30,9 @@
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 
 <!-- paypal script -->
-<script src="https://www.paypal.com/sdk/js?client-id=AY47bMlDTOKTib9p_pUGqSJSNBFrOFF4-MS13VJndD_lj61f4wrj25X2s0RPUUBiBYw5pOB0V0KNgFTG&currency=USD"></script>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AU8aCQqB8oKmwUdiB6Q7BEoWrz36X6j4fgoxYcmYCJX0-JiKq0VqJxREYJt3GtLTMubLF350ws2ZKBQn&currency=USD&intent=capture"></script>
+
 
 <script type="text/javascript">
 /// some script
@@ -130,33 +132,35 @@ $(document).ready(function() {
 <!-- payment integration script -->
 
 <script>
-  paypal.Buttons({
-    createOrder: function(data, actions) {
-      // Set up the transaction
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: '{{ grand_total }}'  // Use your dynamic value from Django context
-          }
-        }]
-      });
-    },
-    onApprove: function(data, actions) {
-      // Capture the funds
-      return actions.order.capture().then(function(details) {
-        // Show a success message to the buyer
-        alert('Transaction completed by ' + details.payer.name.given_name);
+paypal.Buttons({
+ 
 
-        // Optionally redirect the user
-        // window.location.href = '/thank-you/';
-      });
-    },
-    onError: function(err) {
-      console.error('PayPal Checkout error:', err);
-      alert('Payment could not be completed. See console for details.');
-    }
-  }).render('#paypal-button-container'); // Display payment button
+  createOrder: function(data, actions) {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: '{{ grand_total }}'
+        }
+      }]
+    });
+  },
+
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      console.log(details);
+      alert('Transaction completed by ' + details.payer.name.given_name);
+      // Optionally redirect
+      // window.location.href = '/thank-you/';
+    });
+  },
+
+  onError: function(err) {
+    console.error('PayPal Checkout error:', err);
+    alert('Payment could not be completed. See console for details.');
+  }
+}).render('#paypal-button-container');
 </script>
+
 
     
 
