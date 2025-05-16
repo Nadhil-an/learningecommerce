@@ -148,10 +148,11 @@ $(document).ready(function() {
     return cookieValue;
 }
 
-  var url = {% url 'payments' %}
+  var url = "{% url 'payments' %}"
   var csrftoken = getCookie('csrftoken');
-  var orderID = {{ order.order_number}}
+  var orderID = '{{ order.order_number }}'
   var payment_method = 'PayPal'
+  var grand_total ='{{order.order_total}}'
 paypal.Buttons({
  
 
@@ -168,13 +169,14 @@ paypal.Buttons({
   onApprove: function(data, actions) {
     return actions.order.capture().then(function(details) {
       console.log(details);
+      SendData()
       function SendData(){
         fetch(url,{
-          method = 'POST',
-          header : {
+          method : 'POST',
+          headers : {
             "content-type":'application/json',
             // generate the csrf token
-            "X-CSRFTOKEN" : csrftoken,
+            "X-CSRFTOKEN" : getCookie('csrftoken')
           
           },
           body:JSON.stringify({
@@ -182,7 +184,8 @@ paypal.Buttons({
             transID : details.id,
             payment_method : payment_method,
             status :details.status,
-          })
+            amount: grand_total 
+          }),
 
 
         })
