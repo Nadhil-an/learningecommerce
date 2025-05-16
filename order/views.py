@@ -55,7 +55,8 @@ def place_order(request,total=0,quantity=0):
       data.order_number = order_number
       data.save()
 
-      order = Order.objects.get(user=current_user,is_ordered = False,order_number=order_number)
+      order = Order.objects.get
+      (user=current_user,is_ordered = False,order_number=order_number)
       context ={
         'order' : order,
         'cart_items' :cart_items,
