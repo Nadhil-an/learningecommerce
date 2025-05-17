@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from cart.models import CartItem
 from .forms import OrderForm
-from .models import Order,Payment
+from .models import Order,Payment,OrderProduct
 import datetime
 import json
 
@@ -87,4 +87,17 @@ def payments(request):
   order.is_ordered = True
   order.save()
 
+
+  cart_items = CartItem.objects.filter(user=request.user)
+
+  for item in cart_items:
+    orderproduct = OrderProduct()
+    orderproduct.order_id = order.id
+    orderproduct.payment = payment
+    orderproduct.user_id = request.user.id
+    orderproduct.product_id = item.product_id
+    orderproduct.quantity = item.quantity
+    orderproduct.product_price = item.product.price
+    orderproduct.ordered = True
+    orderproduct.save()
   return render(request,'payment.html')
