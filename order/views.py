@@ -2,8 +2,10 @@ from django.shortcuts import render,redirect
 from cart.models import CartItem
 from .forms import OrderForm
 from .models import Order,Payment,OrderProduct
+from store.models import Product
 import datetime
 import json
+
 
 # Create your views here.
 def placeorder(request,total=0,quantity=0):
@@ -87,17 +89,28 @@ def payments(request):
   order.is_ordered = True
   order.save()
 
-
+#move cart items into Order Product
   cart_items = CartItem.objects.filter(user=request.user)
 
   for item in cart_items:
-    orderproduct = OrderProduct()
-    orderproduct.order_id = order.id
-    orderproduct.payment = payment
-    orderproduct.user_id = request.user.id
-    orderproduct.product_id = item.product_id
-    orderproduct.quantity = item.quantity
-    orderproduct.product_price = item.product.price
-    orderproduct.ordered = True
-    orderproduct.save()
+      orderproduct = OrderProduct()
+      orderproduct.order_id = order.id
+      orderproduct.payment = payment
+      orderproduct.user_id = request.user.id
+      orderproduct.product_id = item.product_id
+      orderproduct.quantity = item.quantity
+      orderproduct.product_price = item.product.price
+      orderproduct.ordered = True
+      orderproduct.save()
+
+
+  #reduce the quantity of sold product
+      product = Product.objects.get(id=item.product_id)
+      product.stock -= 1
+      product.save()
+
+  #clear the cartItem
+  CartItem.objects.filter(user=request.user).delete()
+
+
   return render(request,'payment.html')
