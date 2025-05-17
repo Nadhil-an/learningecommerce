@@ -148,14 +148,15 @@ $(document).ready(function() {
     return cookieValue;
 }
 
-  var url = "{% url 'payments' %}"
+  var url = "{% url 'payments' %}" //telling where we needs to send the data
   var csrftoken = getCookie('csrftoken');
-  var orderID = '{{ order.order_number }}'
+  var orderID = '{{ order.order_number }}'  //passing the orderid
   var payment_method = 'PayPal'
-  var grand_total ='{{order.order_total}}'
+  var grand_total ='{{order.order_total}}'  //passing the total amount
+  var redirect_url = "{% url 'ordercomplete' %}"
 paypal.Buttons({
  
-
+ //create the paypal build in button
   createOrder: function(data, actions) {
     return actions.order.create({
       purchase_units: [{
@@ -165,10 +166,12 @@ paypal.Buttons({
       }]
     });
   },
+// confirming the transaction is completed
 
-  onApprove: function(data, actions) {
-    return actions.order.capture().then(function(details) {
-      console.log(details);
+ onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+        console.log(details); // 🟡 Step 1: This should print PayPal response
+
       SendData()
       function SendData(){
         fetch(url,{
@@ -189,8 +192,10 @@ paypal.Buttons({
 
 
         })
-        .then(response => response.json())
-        .then(data => console.log(data));
+        .then((response) => response.json())
+        .then((data) => {
+          window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID
+        });
       }
       alert('Transaction completed by ' + details.payer.name.given_name);
       // Optionally redirect
