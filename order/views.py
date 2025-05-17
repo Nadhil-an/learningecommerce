@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from cart.models import CartItem
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from .forms import OrderForm
 from .models import Order,Payment,OrderProduct
 from store.models import Product
@@ -9,7 +9,7 @@ import json
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
-##template
+##template invoice pdf
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 import io
@@ -169,4 +169,41 @@ def ordercomplete(request):
     return render(request,'order_complete.html',context)
   except (Payment.DoesNotExist,Order.DoesNotExist):
     return redirect('home')
+  
+
+def download_invoice_pdf(request, order_number):
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        ordered_products = OrderProduct.objects.filter(order_id=order.id)
+        payment = Payment.objects.get(payment_id=order.payment.payment_id)
+
+        subtotal = 0
+        for item in ordered_products:
+            subtotal += item.product_price * item.quantity
+
+        context = {
+            'order': order,
+            'ordered_products': ordered_products,
+            'order_number': order.order_number,
+            'transID': payment.payment_id,
+            'payment': payment,
+            'subtotal': subtotal
+        }
+
+        template_path = 'invoice_pdf.html'
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # Generate PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="invoice_{order_number}.pdf"'
+
+        pisa_status = pisa.CreatePDF(io.StringIO(html), dest=response)
+        if pisa_status.err:
+            return HttpResponse('We had some errors with PDF generation <pre>' + html + '</pre>')
+        return response
+
+    except (Order.DoesNotExist, Payment.DoesNotExist):
+        return redirect('home')
+
 

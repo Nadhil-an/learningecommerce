@@ -77,6 +77,10 @@ $(document).ready(function() {
                         <div class="col-lg-6">
                             <!-- col-lg-6 start here -->
                             <div class="invoice-from">
+                                <div class="text-right mt-2">
+    <a href="{% url 'download_invoice' order.order_number %}" class="btn btn-primary">Download Invoice PDF</a>
+</div>
+
                                 <ul class="list-unstyled text-right">
                                     <li><strong>Invoiced To</strong></li>
                                     <li>{{order.full_name}}</li>
