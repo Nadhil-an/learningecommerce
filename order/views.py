@@ -5,6 +5,8 @@ from .models import Order,Payment,OrderProduct
 from store.models import Product
 import datetime
 import json
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -111,6 +113,18 @@ def payments(request):
 
   #clear the cartItem
   CartItem.objects.filter(user=request.user).delete()
+
+  #send the order receive email
+  mail_subject = 'Your order has been recieved'
+  message      = render_to_string('order_recieve.html',{
+                'user'   :request.user,
+                'order'   : order,
+            })
+
+  to_email    = request.user.email
+  send_email  = EmailMessage(mail_subject, message, to=[to_email])
+  send_email.send()
+
 
 
   return render(request,'payment.html')
