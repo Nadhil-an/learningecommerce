@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,variation
+from .models import Product,variation,ReviewRating
 
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
@@ -11,5 +11,8 @@ class VariationAdmin(admin.ModelAdmin):
     list_display = ['product','variation_category','variation_value','is_active']
     list_filter = ('product','variation_category','variation_value','is_active')     
 
+class ReviewRatingAdmin(admin.ModelAdmin):
+     list_display = ['user']
 admin.site.register(Product,ProductAdmin)
 admin.site.register(variation,VariationAdmin)
+admin.site.register(ReviewRating)
