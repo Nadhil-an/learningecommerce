@@ -15,4 +15,4 @@ class ReviewRatingAdmin(admin.ModelAdmin):
      list_display = ['user']
 admin.site.register(Product,ProductAdmin)
 admin.site.register(variation,VariationAdmin)
-admin.site.register(ReviewRating)
+admin.site.register(ReviewRating,ReviewRatingAdmin)
