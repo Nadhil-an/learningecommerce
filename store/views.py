@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product,variation,ReviewRating
+from order.models import OrderProduct
 from category.models import Category
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -40,10 +41,19 @@ def product_details(request, category_slug, product_slug):
     product_variation_color = variation.objects.color().filter(product=single_product)
     product_variation_size = variation.objects.size().filter(product=single_product)
 
+
+    if request.user.is_authenticated:
+        orderproduct = OrderProduct.objects.filter(user=request.user, product_id=single_product.id).exists()
+    else:
+        orderproduct = None
+
+
+
     context = {
         'single_product': single_product,
         'product_variation_color':product_variation_color,
-        'product_variation_size':product_variation_size
+        'product_variation_size':product_variation_size,
+        'orderproduct':orderproduct
     }
     return render(request, 'product_details.html', context)
 
