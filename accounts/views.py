@@ -202,3 +202,9 @@ def resetpassword(request):
 def checkout(request):
     return render(request,'checkout.html')
     
+def myorders(request):
+    orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
+    context = {
+        'orders' :orders
+    }
+    return render(request,'orders.html',context)
