@@ -48,12 +48,13 @@ def product_details(request, category_slug, product_slug):
         orderproduct = None
 
 
-
+    product_review = ReviewRating.objects.filter(product_id=single_product.id,status=True)
     context = {
         'single_product': single_product,
         'product_variation_color':product_variation_color,
         'product_variation_size':product_variation_size,
-        'orderproduct':orderproduct
+        'orderproduct':orderproduct.as_integer_ratio,
+        'product_review':product_review
     }
     return render(request, 'product_details.html', context)
 

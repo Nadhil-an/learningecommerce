@@ -23,7 +23,7 @@ class Order(models.Model):
         ('Cancelled','Cancelled')
     )
 
-    user = models.ForeignKey(Account,on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL,blank=True,null=True)
     order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)
@@ -54,7 +54,10 @@ class Order(models.Model):
 
 
     def __str__(self):
-        return self.user.first_name
+        if self.user:
+            return self.user.first_name
+        return f"Order #{self.order_number}"
+
     
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
