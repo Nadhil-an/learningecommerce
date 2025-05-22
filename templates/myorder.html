@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=604800" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>GreatKart | One of the Biggest Online Shopping Platform</title>
+
+<link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+
+<!-- jQuery -->
+<script src="{% static 'js/jquery-2.0.0.min.js'%}" type="text/javascript"></script>
+
+<!-- Bootstrap4 files-->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+<!-- Font awesome 5 -->
+<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+
+<!-- custom style -->
+<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+<!-- Replace your current link with this CDN version for testing -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+<!-- custom javascript -->
+<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+/// some script
+
+// jquery ready start
+$(document).ready(function() {
+	// jQuery code
+
+}); 
+// jquery end
+</script>
+
+</head>
+<body>
+
+<section class="section-conten padding-y bg">
+    {% include 'includes/alert.html' %}
+
+    <div class="container">
+        <div class="row">
+        {% include 'includes/dashboard_include.html' %}
+        <main class="col-md-9">
+            <article class="card" >
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Your Order History</strong>
+            </header>
+            <div class="card-body">
+                <div class="row"> 
+                    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Order #</th>
+      <th scope="col">Billing Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Order Total</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders%}
+    <tr>
+      <th scope="row">{{order.order_number }}</th>
+      <td>{{order.full_name}}</td>
+      <td>{{ order.phone}}</td>
+      <td>{{ order.order_total}}</td>
+      <td>{{ order.created_at}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+                    
+                   
+
+                </div> <!-- row.// -->
+            </div> <!-- card-body .// -->
+            
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+    
+    
+    </section>
+
+
+
+
+
+
+
+</body>
+</html>

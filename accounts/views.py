@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect
-from . forms import RegistrationForm
-from .models import Account
+from django.shortcuts import render,redirect,get_object_or_404
+from . forms import RegistrationForm,UserForm,UserProfileForm
+from .models import Account,UserProfile
 from order.models import Order
 from cart.views import Cart,CartItem
 from django.contrib import auth,messages
@@ -122,12 +122,15 @@ def activate(request,uidb64,token):
 
 @login_required(login_url= 'login')
 def dashboard(request):
+    userprofile, created = UserProfile.objects.get_or_create(user=request.user)
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     order_count = orders.count()
 
     context = {
         'user': request.user,
         'order_count': order_count,
+        'userprofile': userprofile 
+
     }
  
     return render(request, 'dashboard.html', context)
@@ -207,4 +210,29 @@ def myorders(request):
     context = {
         'orders' :orders
     }
-    return render(request,'orders.html',context)
+    return render(request,'myorder.html',context)
+
+def editprofile(request):
+    userprofile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated.')
+            return redirect('editprofile')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=userprofile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'userprofile': userprofile 
+    }
+    return render(request, 'editprofile.html', context)
+
+def changepassword(request):
+    return render(request,'changepassword.html')
